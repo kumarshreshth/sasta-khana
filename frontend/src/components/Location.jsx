@@ -9,8 +9,15 @@ const Location = () => {
     setSearchValue(event.target.value);
   };
 
-  const Search = () => {
-    console.log(searchValue);
+  const Search = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/search', {
+        searchValue,
+      });
+      console.log('Resopnse from backend: ', response.data);
+    } catch (error) {
+      console.log('Error from the backend: ', error);
+    }
   };
 
   return (
