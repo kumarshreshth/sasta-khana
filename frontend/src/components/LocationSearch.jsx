@@ -30,6 +30,7 @@ const LocationSearch = ({
       setData(response);
       setError(false);
     } catch (error) {
+      setIsSuccess(false);
       setErrorValue(error);
       setError(true);
     }

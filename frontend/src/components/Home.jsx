@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 
 const Home = () => {
   const [isError, setError] = useState(false);
-  const [errorValue, setErrorValue] = useState('');
+  const [errorValue, setErrorValue] = useState(null);
 
   return (
     <div className="min-h-screen inset-0 bg-[url('./assets/background-image.jpg')] opacity-90">

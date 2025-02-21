@@ -1,9 +1,29 @@
 import React from 'react';
+import { fetchMenu } from '../api';
 
-const RestaurantCard = ({ data }) => {
-  const OpenMenu = (item) => {
+const RestaurantCard = ({
+  data,
+  isError,
+  setError,
+  errorValue,
+  setErrorValue,
+  menuData,
+  setMenuData,
+  menu,
+  setMenu,
+}) => {
+  const OpenMenu = async (item) => {
     if (item.open) {
-      console.log('Open');
+      try {
+        const response = await fetchMenu(item.id);
+        console.log(response);
+        setMenuData(response);
+        setMenu(true);
+        setError(false);
+      } catch (error) {
+        setError(true);
+        setErrorValue(error);
+      }
     }
   };
 
