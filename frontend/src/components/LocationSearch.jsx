@@ -1,8 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
-import axios from 'axios';
+import { fetchDetails } from '../api';
 
-const Location = () => {
+const LocationSearch = ({ isError, setError, errorValue, setErrorValue }) => {
   const [searchValue, setSearchValue] = useState('');
 
   const handleInputChange = (event) => {
@@ -10,13 +10,17 @@ const Location = () => {
   };
 
   const Search = async () => {
+    if (searchValue.trim() == '') {
+      alert('Please enter location to search');
+      return;
+    }
     try {
-      const response = await axios.post('http://localhost:5000/search', {
-        searchValue,
-      });
-      console.log('Resopnse from backend: ', response.data);
+      const response = await fetchDetails(searchValue);
+      console.log(response);
+      setError(false);
     } catch (error) {
-      console.log('Error from the backend: ', error);
+      setErrorValue(error);
+      setError(true);
     }
   };
 
@@ -48,4 +52,4 @@ const Location = () => {
   );
 };
 
-export default Location;
+export default LocationSearch;
