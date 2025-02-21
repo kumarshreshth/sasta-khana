@@ -167,7 +167,7 @@ app.post('/searchMenu', async (req, res) => {
   }
 });
 
-// app.post('/search', (req, res) => {
+// app.post('/searchRestaurant', (req, res) => {
 //   return res.status(500).json({ message: 'Error from backend' });
 // });
 

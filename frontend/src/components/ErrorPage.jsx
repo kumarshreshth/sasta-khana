@@ -2,7 +2,7 @@ import React from 'react';
 
 const ErrorPage = ({ errorValue }) => {
   return (
-    <div className="mt-16 ml-4 p-4">
+    <div className="pt-22 pl-6">
       <p className="text-red-900 font-bold text-left text-4xl">
         {errorValue ? errorValue : 'An unknown error!!!!'}
         <br />
