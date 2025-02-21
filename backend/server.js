@@ -73,7 +73,7 @@ function collectData(dataObject) {
 }
 
 //Route to search restaurants based on location
-app.post('/search', async (req, res) => {
+app.post('/searchRestaurant', async (req, res) => {
   const { searchValue } = req.body;
 
   if (!searchValue) {
@@ -99,7 +99,7 @@ app.post('/search', async (req, res) => {
 
     const dataObject = await callToSwiggy(longitude, latitude);
 
-    console.log('Final Data Sent:', dataObject);
+    // console.log('Final Data Sent:', dataObject);
     return res.json(dataObject);
   } catch (err) {
     return res.status(500).json({ message: 'Location service error' });

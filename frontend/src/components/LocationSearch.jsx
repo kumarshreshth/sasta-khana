@@ -1,8 +1,17 @@
 import React from 'react';
 import { useState } from 'react';
-import { fetchDetails } from '../api';
+import { fetchRestaurant } from '../api';
 
-const LocationSearch = ({ isError, setError, errorValue, setErrorValue }) => {
+const LocationSearch = ({
+  isError,
+  setError,
+  errorValue,
+  setErrorValue,
+  isSuccess,
+  setIsSuccess,
+  data,
+  setData,
+}) => {
   const [searchValue, setSearchValue] = useState('');
 
   const handleInputChange = (event) => {
@@ -15,8 +24,10 @@ const LocationSearch = ({ isError, setError, errorValue, setErrorValue }) => {
       return;
     }
     try {
-      const response = await fetchDetails(searchValue);
-      console.log(response);
+      const response = await fetchRestaurant(searchValue);
+      setIsSuccess(true);
+      //console.log(response);
+      setData(response);
       setError(false);
     } catch (error) {
       setErrorValue(error);
@@ -25,7 +36,7 @@ const LocationSearch = ({ isError, setError, errorValue, setErrorValue }) => {
   };
 
   return (
-    <div className="bg-black opacity-80 rounded-xl">
+    <div className="bg-black rounded-xl opacity-90">
       <div className="flex items-center space-x-6 m-3 p-5">
         <div className="text-white text-3xl">
           <i className="fa fa-map-marker"></i>

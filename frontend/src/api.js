@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-export const fetchDetails = async (searchValue) => {
+export const fetchRestaurant = async (searchValue) => {
   try {
-    const result = await axios.post('http://localhost:5000/search', {
+    const result = await axios.post('http://localhost:5000/searchRestaurant', {
       searchValue,
     });
     return result.data;
