@@ -15,6 +15,8 @@ const Login = () => {
       const res = await login(email, password);
       if (isLoggedIn && loginRedirect) {
         navigate(loginRedirect);
+      } else if (isLoggedIn) {
+        navigate('/');
       }
     } catch (error) {
       toast.error(error.message);
