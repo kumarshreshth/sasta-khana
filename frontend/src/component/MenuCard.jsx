@@ -19,35 +19,36 @@ const MenuCard = () => {
   }, [islocationSet, menuData, navigate]);
 
   const handleClick = (id) => {
-    if (isLoggedIn) {
-      setSelectedItemId((prev) => (prev === id ? null : id));
-    } else {
-      setLoginRedirect(Location.pathname);
-      navigate('/login');
-    }
+    // if (isLoggedIn) {
+    //   setSelectedItemId((prev) => (prev === id ? null : id));
+    // } else {
+    //   setLoginRedirect(Location.pathname);
+    //   navigate('/login');
+    // }
+    setSelectedItemId((prev) => (prev === id ? null : id));
   };
 
-  const handleAddToCart = (e, item, distance) => {
+  const handleAddToCart = (e, item) => {
     e.stopPropagation();
-    addToCart(item, distance);
+    addToCart(item);
   };
   return (
     <div className="px-8 py-10">
       <h1 className="text-4xl font-bold text-gray-700 mb-10 text-center">
         Menu List
       </h1>
-      <div className="grid grid-cols-2 gap-5">
+      <div className="flex flex-col space-y-10 items-center">
         {menuData?.map((data) => (
           <div
             key={data.id}
-            className="border-1 border-black p-4 rounded-xl hover:scale-102"
+            className="border-1 border-black p-4 rounded-xl hover:scale-102 w-4/5"
             onClick={() => handleClick(data.id)}
           >
-            <div className="flex space-x-5">
-              <div className="w-1/3">
+            <div className="flex space-x-3">
+              <div className="w-1/6">
                 <img
                   src="/img1.jpg"
-                  className="size-40"
+                  className="size-40 rounded-xl"
                 />
               </div>
               <div className="p-2 w-full">
@@ -70,23 +71,19 @@ const MenuCard = () => {
                     <div className="text-xl text-red-400">
                       At swiggy for{' '}
                       <span className="text-black">
-                        &#8377; {data.prices[1].Swiggy}
+                        &#8377; {data.prices['Swiggy']}
                       </span>
                     </div>
                     <div>
                       <button
-                        className={`py-1 px-2 rounded-xl text-xl ${
-                          activeItemPlatform === 'Zomato'
-                            ? 'bg-gray-500'
-                            : 'bg-green-400 hover:bg-red-400 cursor-pointer'
-                        }`}
-                        disabled={activeItemPlatform === 'Zomato'}
+                        className={`py-1 px-2 rounded-xl text-xl bg-green-400 hover:bg-red-400 cursor-pointer`}
                         onClick={(e) =>
                           handleAddToCart(e, {
+                            id: data.id + '1',
                             item_name: data.item_name,
                             platform: 'Swiggy',
                             distance: data.distance,
-                            price: data.prices[1].Swiggy,
+                            price: data.prices['Swiggy'],
                           })
                         }
                       >
@@ -102,23 +99,19 @@ const MenuCard = () => {
                     <div className="text-xl text-red-400">
                       At Zomato for{' '}
                       <span className="text-black">
-                        &#8377; {data.prices[0].Zomato}
+                        &#8377; {data.prices['Zomato']}
                       </span>
                     </div>
                     <div>
                       <button
-                        className={`py-1 px-2 rounded-xl text-xl ${
-                          activeItemPlatform === 'Swiggy'
-                            ? 'bg-gray-500'
-                            : 'bg-green-400 hover:bg-red-400 cursor-pointer'
-                        }`}
-                        disabled={activeItemPlatform === 'Swiggy'}
+                        className={`py-1 px-2 rounded-xl text-xl bg-green-400 hover:bg-red-400 cursor-pointer`}
                         onClick={(e) =>
                           handleAddToCart(e, {
+                            id: data.id + '2',
                             item_name: data.item_name,
                             platform: 'Zomato',
                             distance: data.distance,
-                            price: data.prices[0].Zomato,
+                            price: data.prices['Zomato'],
                           })
                         }
                       >
@@ -131,6 +124,17 @@ const MenuCard = () => {
             </div>
           </div>
         ))}
+      </div>
+      <div className="fixed bottom-4 right-4 z-50">
+        <button
+          className="bg-blue-600 text-white p-4 rounded-full hover:bg-gray-600 cursor-pointer"
+          onClick={() => navigate('/cart')}
+        >
+          <img
+            src="./cart.svg"
+            className="size-8"
+          />
+        </button>
       </div>
     </div>
   );

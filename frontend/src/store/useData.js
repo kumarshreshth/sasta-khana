@@ -6,6 +6,7 @@ export const dataVariable = create((set, get) => ({
   islocationSet: false,
   restaurantData: null,
   menuData: null,
+  couponDetails: {},
   setLocation: async (latitude, longitude) => {
     try {
       const res = await axiosInstance.post('/search/location', {
@@ -14,6 +15,8 @@ export const dataVariable = create((set, get) => ({
       });
       const city = res.data.city;
       set({ islocationSet: true });
+      // const response = await axiosInstance.get('/auth/coupons');
+      // set({ couponDetails: response.data });
       get().getRestaurant(city);
     } catch (error) {
       toast.error(error?.response?.data?.message);
@@ -37,34 +40,31 @@ export const dataVariable = create((set, get) => ({
         id,
       });
       const data = res.data.menuData;
-      const reduceData = data.reduce((acc, item, index) => {
-        if (!acc[item.item_name]) {
-          acc[item.item_name] = {
-            id: index,
-            distance: obj.distance,
-            item_name: item.item_name,
-            prices: [],
-            is_veg: item.is_veg,
-            description: item.description,
-            restaurant_id: item.restaurant_id,
-            img_url: item.img_url,
-            rating: item.rating,
-          };
-        }
 
-        acc[item.item_name].prices.push({
-          [item.platform]: item.price,
-        });
+      const groupedMenu = Object.values(
+        data.reduce((acc, item) => {
+          const key = item.item_name;
 
-        return acc;
-      }, {});
+          if (!acc[key]) {
+            acc[key] = {
+              id: item.item_id.split('_').slice(0, 2).join('_'),
+              item_name: item.item_name,
+              description: item.description,
+              is_veg: item.is_veg,
+              rating: item.rating,
+              prices: {},
+              distance: obj.distance,
+            };
+          }
 
-      const filteredData = Object.values(reduceData);
-
-      set({ menuData: filteredData });
+          acc[key].prices[item.platform] = item.price;
+          return acc;
+        }, {})
+      );
+      set({ menuData: groupedMenu });
     } catch (error) {
       set({ menuData: null });
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message || error.message);
     }
   },
 }));

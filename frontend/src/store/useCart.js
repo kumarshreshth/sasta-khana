@@ -5,9 +5,10 @@ import toast from 'react-hot-toast';
 export const cartVariable = create((set, get) => ({
   isLoggedIn: false,
   loginRedirect: null,
-  itemQuantity: {},
-  activeItemPlatform: null,
-  cart: [],
+  itemQuantityZomato: {},
+  itemQuantitySwiggy: {},
+  cartSwiggy: [],
+  cartZomato: [],
   signup: async (name, phoneNumber, email, password) => {
     try {
       const res = await axiosInstance.post('/auth/signup', {
@@ -45,39 +46,70 @@ export const cartVariable = create((set, get) => ({
   },
 
   addToCart: (item) => {
-    if (!get().activeItemPlatform) {
-      set({ activeItemPlatform: item.platform });
+    let existingItem;
+    if (item.platform === 'Swiggy') {
+      existingItem = get().cartSwiggy.find((obj) => obj.id === item.id);
+      if (existingItem) {
+        get().addQuantity(item, '+');
+      } else {
+        set((state) => ({
+          cartSwiggy: [...state.cartSwiggy, item],
+        }));
+        get().addQuantity(item, '+');
+      }
+    } else {
+      existingItem = get().cartZomato.find((obj) => (obj.id = item.id));
+      if (existingItem) {
+        get().addQuantity(item, '+');
+      } else {
+        set((state) => ({
+          cartZomato: [...state.cartZomato, item],
+        }));
+        get().addQuantity(item, '+');
+      }
     }
-    set((state) => ({
-      cart: [...state.cart, item],
-    }));
-    get().addQuantity(item, '+');
   },
+
   addQuantity: (item, op) => {
-    const existingQty = get().itemQuantity[item.item_name] || 0;
-    const newQty =
-      existingQty === 0 ? 1 : op === '+' ? existingQty + 1 : existingQty - 1;
-    set((state) => ({
-      itemQuantity: {
-        ...state.itemQuantity,
-        [item.item_name]: newQty,
-      },
-    }));
-  },
+    if (item.platform === 'Swiggy') {
+      // 1) compute new qty
+      const existingQty = get().itemQuantitySwiggy[item.id] || 0;
+      const newQty =
+        op === '+' ? existingQty + 1 : Math.max(0, existingQty - 1); // never negative
 
-  removeFromCart: (itemName) => {
-    set((state) => {
-      const updatedCart = state.cart.filter(
-        (item) => item.item_name !== itemName
-      );
-      const updatedQty = { ...state.itemQuantity };
-      delete updatedQty[item.item_name];
+      // 2) update qty map
+      set((state) => ({
+        itemQuantitySwiggy: {
+          ...state.itemQuantitySwiggy,
+          [item.id]: newQty,
+        },
+      }));
 
-      return {
-        cart: updatedCart,
-        itemQuantity: updatedQty,
-      };
-    });
+      // 3) if it hit zero, remove from cartSwiggy
+      if (newQty === 0) {
+        set((state) => ({
+          cartSwiggy: state.cartSwiggy.filter((obj) => obj.id !== item.id),
+        }));
+      }
+    } else {
+      // same for Zomato
+      const existingQty = get().itemQuantityZomato[item.id] || 0;
+      const newQty =
+        op === '+' ? existingQty + 1 : Math.max(0, existingQty - 1);
+
+      set((state) => ({
+        itemQuantityZomato: {
+          ...state.itemQuantityZomato,
+          [item.id]: newQty,
+        },
+      }));
+
+      if (newQty === 0) {
+        set((state) => ({
+          cartZomato: state.cartZomato.filter((obj) => obj.id !== item.id),
+        }));
+      }
+    }
   },
 
   setLoginRedirect: (path) => set({ loginRedirect: path }),

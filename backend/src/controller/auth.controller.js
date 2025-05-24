@@ -1,4 +1,5 @@
 import User from '../models/user.model.js';
+import Coupon from '../models/coupon.model.js';
 import { generateToken } from '../lib/utils.js';
 
 export const signup = async (req, res) => {
@@ -60,6 +61,16 @@ export const logout = (req, res) => {
     res.status(200).json({ message: 'Logout successfully' });
   } catch (error) {
     console.log('Error in logout controller', error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+export const coupons = async (req, res) => {
+  try {
+    const couponData = await Coupon.find({});
+    res.status(200).json({ ...couponData });
+  } catch (error) {
+    console.log('Error in coupon controller', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
