@@ -1,5 +1,6 @@
 import User from '../models/user.model.js';
 import Coupon from '../models/coupon.model.js';
+import userCoupon from '../models/userCoupon.model.js';
 import { generateToken } from '../lib/utils.js';
 
 export const signup = async (req, res) => {
@@ -48,7 +49,7 @@ export const login = async (req, res) => {
     }
 
     generateToken(user._id, res);
-    res.status(200).json({ message: 'successsful access' });
+    res.status(200).json({ user });
   } catch (error) {
     console.log('Error in login controller', error.message);
     res.status(500).json({ message: 'Internal Server Error' });
@@ -68,9 +69,46 @@ export const logout = (req, res) => {
 export const coupons = async (req, res) => {
   try {
     const couponData = await Coupon.find({});
-    res.status(200).json({ ...couponData });
+    res.status(200).json({ couponData });
   } catch (error) {
     console.log('Error in coupon controller', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+export const getUserCoupon = async (req, res) => {
+  const { couponId } = req.body;
+  try {
+    const couponExist = await userCoupon.findOne({ couponId });
+    if (couponExist) {
+      res.status(200).json({ couponExist });
+    } else {
+      res.status(200).json({ message: 'No such coupon' });
+    }
+  } catch (error) {
+    console.log('Error in getUserCoupon', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+export const addUserCoupon = async (req, res) => {
+  const { couponId } = req.body;
+  try {
+    const couponExist = await userCoupon.findOne({ couponId });
+    if (couponExist) {
+      await userCoupon.updateOne({ couponId }, { $inc: { used: 1 } });
+      return res.status(200).json({ message: 'Entry Update' });
+    } else {
+      const coupon = new userCoupon({
+        couponId,
+        used: 1,
+      });
+
+      await coupon.save();
+      return res.status(200).json({ message: 'Entry Added' });
+    }
+  } catch (error) {
+    console.log('Error in addUserCoupon', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };

@@ -8,6 +8,7 @@ import { Toaster } from 'react-hot-toast';
 import RestaurantCard from './component/RestaurantCard';
 import MenuCard from './component/MenuCard';
 import Cart from './pages/Cart';
+import Profile from './pages/Profile';
 
 const App = () => {
   return (
@@ -41,6 +42,10 @@ const App = () => {
         <Route
           path="/cart"
           element={<Cart />}
+        />
+        <Route
+          path="/profile"
+          element={<Profile />}
         />
       </Routes>
     </div>

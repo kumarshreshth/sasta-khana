@@ -16,10 +16,10 @@ const Login = () => {
       if (isLoggedIn && loginRedirect) {
         navigate(loginRedirect);
       } else if (isLoggedIn) {
-        navigate('/');
+        navigate('/restaurant');
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error?.message);
     }
   };
 

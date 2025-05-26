@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { cartVariable } from '../store/useCart.js';
 
 const Navbar = () => {
+  const { isLoggedIn } = cartVariable();
   return (
     <div className="bg-gray-200">
       <div className="pl-10 pr-10 pt-2">
@@ -22,11 +24,17 @@ const Navbar = () => {
               <Link to="/about">ABOUT</Link>
             </div>
             <div className="text-xl p-1 hover:text-black cursor-pointer">
-              <Link to="/login">LOGIN</Link>
-            </div>
-            <div className="text-xl p-1 hover:text-black cursor-pointer">
               <Link to="/cart">CART</Link>
             </div>
+            {!isLoggedIn ? (
+              <div className="text-xl p-1 hover:text-black cursor-pointer">
+                <Link to="/login">LOGIN</Link>
+              </div>
+            ) : (
+              <div className="text-xl p-1 hover:text-black cursor-pointer">
+                <Link to="/profile">PROFILE</Link>
+              </div>
+            )}
           </div>
         </div>
       </div>

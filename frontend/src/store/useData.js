@@ -9,15 +9,15 @@ export const dataVariable = create((set, get) => ({
   couponDetails: {},
   setLocation: async (latitude, longitude) => {
     try {
-      const res = await axiosInstance.post('/search/location', {
-        latitude,
-        longitude,
-      });
-      const city = res.data.city;
+      // const res = await axiosInstance.post('/search/location', {
+      //   latitude,
+      //   longitude,
+      // });
+      // const city = res.data.city;
       set({ islocationSet: true });
       // const response = await axiosInstance.get('/auth/coupons');
       // set({ couponDetails: response.data });
-      get().getRestaurant(city);
+      get().getRestaurant('Noida');
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }

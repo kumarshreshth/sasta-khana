@@ -19,19 +19,20 @@ const MenuCard = () => {
   }, [islocationSet, menuData, navigate]);
 
   const handleClick = (id) => {
-    // if (isLoggedIn) {
-    //   setSelectedItemId((prev) => (prev === id ? null : id));
-    // } else {
-    //   setLoginRedirect(Location.pathname);
-    //   navigate('/login');
-    // }
-    setSelectedItemId((prev) => (prev === id ? null : id));
+    if (isLoggedIn) {
+      setSelectedItemId((prev) => (prev === id ? null : id));
+    } else {
+      setLoginRedirect(Location.pathname);
+      navigate('/login');
+    }
   };
 
   const handleAddToCart = (e, item) => {
     e.stopPropagation();
     addToCart(item);
+    toast.success('Item added');
   };
+
   return (
     <div className="px-8 py-10">
       <h1 className="text-4xl font-bold text-gray-700 mb-10 text-center">
@@ -127,12 +128,23 @@ const MenuCard = () => {
       </div>
       <div className="fixed bottom-4 right-4 z-50">
         <button
-          className="bg-blue-600 text-white p-4 rounded-full hover:bg-gray-600 cursor-pointer"
+          className="bg-blue-400 text-white p-4 rounded-full hover:bg-gray-600 cursor-pointer"
           onClick={() => navigate('/cart')}
         >
           <img
             src="./cart.svg"
             className="size-8"
+          />
+        </button>
+      </div>
+      <div className="fixed bottom-4 left-4 z-50">
+        <button
+          className="bg-blue-400 text-white p-2 rounded-full hover:bg-gray-600 cursor-pointer"
+          onClick={() => navigate('/restaurant')}
+        >
+          <img
+            src="./resicon.png"
+            className="size-12"
           />
         </button>
       </div>

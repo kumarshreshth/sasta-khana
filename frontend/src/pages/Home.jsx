@@ -4,9 +4,12 @@ import { dataVariable } from '../store/useData.js';
 import RestaurantCard from '../component/RestaurantCard';
 import MenuCard from '../component/MenuCard';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { cartVariable } from '../store/useCart.js';
 
 const Home = () => {
   const { islocationSet, setLocation } = dataVariable();
+  const { isLoggedIn } = cartVariable();
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -24,7 +27,8 @@ const Home = () => {
         }
       );
     } else {
-      toast('Location is already entered');
+      toast('Location Already Entered');
+      navigate('/restaurant');
     }
   };
   return (
