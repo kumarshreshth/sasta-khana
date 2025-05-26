@@ -93,7 +93,7 @@ const Price = ({ platform, cart, itemQuantity }) => {
         </div>
       )}
 
-      {discountValue && (
+      {discountValue > 0 && (
         <div className="flex justify-between items-center w-full font-bold">
           <div>Discount</div>
           <div>₹{discountValue}</div>
