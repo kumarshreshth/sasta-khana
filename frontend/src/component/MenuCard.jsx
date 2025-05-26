@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { dataVariable } from '../store/useData.js';
 import { cartVariable } from '../store/useCart.js';
 import { useNavigate, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const MenuCard = () => {
   const [selectedItemId, setSelectedItemId] = useState(null);
-  const { islocationSet, menuData } = dataVariable();
-  const { isLoggedIn, setLoginRedirect, addToCart, activeItemPlatform } =
+  const { isLoggedIn, setLoginRedirect, addToCart, isLocationSet, menuData } =
     cartVariable();
   const navigate = useNavigate();
   const Location = useLocation();
 
   useEffect(() => {
-    if (!islocationSet && !menuData) {
+    if (!isLocationSet && !menuData) {
       navigate('/');
     }
-  }, [islocationSet, menuData, navigate]);
+  }, [isLocationSet, menuData, navigate]);
 
   const handleClick = (id) => {
     if (isLoggedIn) {

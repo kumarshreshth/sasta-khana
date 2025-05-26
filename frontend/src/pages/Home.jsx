@@ -1,19 +1,15 @@
 import toast from 'react-hot-toast';
 import TypeWriter from 'typewriter-effect';
-import { dataVariable } from '../store/useData.js';
-import RestaurantCard from '../component/RestaurantCard';
-import MenuCard from '../component/MenuCard';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { cartVariable } from '../store/useCart.js';
 
 const Home = () => {
-  const { islocationSet, setLocation } = dataVariable();
-  const { isLoggedIn } = cartVariable();
+  const { isLocationSet, setLocation, isLoggedIn } = cartVariable();
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (!islocationSet && 'geolocation' in navigator) {
+    if (!isLocationSet && 'geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const latitude = position.coords.latitude;
@@ -27,16 +23,9 @@ const Home = () => {
         }
       );
     } else {
-      toast('Location Already Entered');
       navigate('/restaurant');
     }
   };
-
-  useEffect(() => {
-    if (isLoggedIn && islocationSet) {
-      navigate('/restaurant');
-    }
-  }, [isLoggedIn]);
 
   return (
     <div>
@@ -69,7 +58,7 @@ const Home = () => {
             className="px-6 py-3 bg-green-500 text-black rounded-xl hover:bg-gray-500 transition cursor-pointer"
             onClick={handleClick}
           >
-            Get Location
+            {isLocationSet ? 'Restaurant List' : 'Get Location'}
           </button>
           <p className="text-gray-600">
             Click the button to get restaurant list nearest to your location

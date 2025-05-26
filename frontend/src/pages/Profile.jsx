@@ -25,17 +25,17 @@ const Profile = () => {
           <div className="flex flex-col space-y-5 m-5 p-5">
             <div className="grid grid-cols-2 gap-1">
               <div className="text-xl font-bold text-gray-600">Name</div>
-              <div className="text-xl font-bold">{userInfo.name}</div>
+              <div className="text-xl font-bold">{userInfo?.name}</div>
             </div>
             <div className="grid grid-cols-2 gap-1">
               <div className="text-xl font-bold text-gray-600">
                 Phone Number
               </div>
-              <div className="text-xl font-bold">{userInfo.phoneNumber}</div>
+              <div className="text-xl font-bold">{userInfo?.phoneNumber}</div>
             </div>
             <div className="grid grid-cols-2 gap-1">
               <div className="text-xl font-bold text-gray-600">Email Id</div>
-              <div className="text-xl font-bold">{userInfo.email}</div>
+              <div className="text-xl font-bold">{userInfo?.email}</div>
             </div>
           </div>
         </div>

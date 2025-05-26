@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 import { Star, Ticket } from 'lucide-react';
-import { dataVariable } from '../store/useData.js';
+import { cartVariable } from '../store/useCart.js';
 import { useNavigate } from 'react-router-dom';
 
 const RestaurantCard = () => {
-  const { islocationSet, restaurantData, getMenu } = dataVariable();
+  const { isLocationSet, restaurantData, getMenu } = cartVariable();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!islocationSet && !restaurantData) {
+    if (!isLocationSet && !restaurantData) {
       navigate('/');
     }
-  }, [islocationSet, restaurantData, navigate]);
+  }, [isLocationSet, restaurantData, navigate]);
 
   const handleClick = async (id, obj) => {
     await getMenu(id, obj);

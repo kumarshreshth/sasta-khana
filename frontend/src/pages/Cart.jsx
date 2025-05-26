@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { cartVariable } from '../store/useCart';
 import { useNavigate } from 'react-router-dom';
-import { dataVariable } from '../store/useData.js';
 import CartItem from '../component/CartItem.jsx';
 import Price from '../component/Price.jsx';
 
@@ -12,19 +11,17 @@ const Cart = () => {
     cartSwiggy,
     itemQuantitySwiggy,
     itemQuantityZomato,
-    userInfo,
-    couponsList,
+    cartReset,
   } = cartVariable();
   const navigate = useNavigate();
-  const { isLocationSet } = dataVariable();
 
   const handleExplore = () => {
-    if (isLocationSet) {
-      navigate('/restauarnt');
-    } else {
-      navigate('/');
-    }
+    navigate('/');
   };
+  const reset = () => {
+    cartReset();
+  };
+
   return (
     <>
       {cartSwiggy.length === 0 && cartZomato.length === 0 ? (
@@ -72,6 +69,7 @@ const Cart = () => {
               <button
                 className=" bg-blue-600 text-white p-2 rounded-xl hover:bg-gray-500 transition cursor-pointer"
                 onClick={() => {
+                  reset();
                   toast.success('Item has been ordered');
                 }}
               >
