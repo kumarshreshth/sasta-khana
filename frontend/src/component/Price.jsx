@@ -92,6 +92,13 @@ const Price = ({ platform, cart, itemQuantity }) => {
           <div>{appliedCoupon.code}</div>
         </div>
       )}
+
+      {discountValue && (
+        <div className="flex justify-between items-center w-full font-bold">
+          <div>Discount</div>
+          <div>₹{discountValue}</div>
+        </div>
+      )}
     </div>
   );
 };

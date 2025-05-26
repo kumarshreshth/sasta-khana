@@ -31,6 +31,13 @@ const Home = () => {
       navigate('/restaurant');
     }
   };
+
+  useEffect(() => {
+    if (isLoggedIn && islocationSet) {
+      navigate('/restaurant');
+    }
+  }, [isLoggedIn]);
+
   return (
     <div>
       <div className="text-gray-800 flex flex-col items-center justify-center py-10 px-6 mb-10">
